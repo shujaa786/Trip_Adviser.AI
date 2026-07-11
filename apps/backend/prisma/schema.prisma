@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum TripStatus {
+  PLANNING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Trip {
+  id          String      @id @default(cuid())
+  destination String
+  startDate   DateTime?
+  endDate     DateTime?
+  budget      Int?
+  travelers   Int         @default(1)
+  status       TripStatus @default(PLANNING)
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String?
+  context   Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
