@@ -3,3 +3,7 @@ export * from "./workflow";
 export * from "./agents";
 export * from "./orchestrator";
 export * from "./composers";
+export * from "./database";
+export * from "./users";
+export * from "./auth";
+export * from "./trips";

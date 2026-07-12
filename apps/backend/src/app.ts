@@ -4,10 +4,11 @@ import helmet from "helmet";
 import morgan from "morgan";
 import tripRouter from "./routes/trip.route";
 import healthRouter from "./routes/health.route";
-
+import { authRoute } from "./routes/auth.route";
 import { requestLogger } from "./middleware/request-logger";
 import { notFoundMiddleware } from "./middleware/not-found.middleware";
 import { errorMiddleware } from "./middleware/error.middleware";
+import { tripModuleRouter } from "./modules/trips/trip.routes";
 
 const app = express();
 
@@ -22,7 +23,9 @@ app.use(requestLogger);
 app.use(morgan("dev"));
 
 app.use("/api/v1/health", healthRouter);
+app.use("/api/v1", authRoute);
 app.use("/api/v1/trips", tripRouter);
+app.use("/api/v1/trips", tripModuleRouter);
 app.use(notFoundMiddleware);
 
 app.use(errorMiddleware);

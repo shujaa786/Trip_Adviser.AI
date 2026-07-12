@@ -17,12 +17,22 @@ enum TripStatus {
 
 model Trip {
   id          String      @id @default(cuid())
+
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+
   destination String
+
   startDate   DateTime?
   endDate     DateTime?
+
   budget      Int?
   travelers   Int         @default(1)
-  status       TripStatus @default(PLANNING)
+
+  status      TripStatus  @default(PLANNING)
+
+  request     Json
+  response    Json
 
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
@@ -35,4 +45,16 @@ model Session {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model User {
+  id         String   @id @default(cuid())
+  name       String
+  email      String   @unique
+  password   String
+
+  trips      Trip[]
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

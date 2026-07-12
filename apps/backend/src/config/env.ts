@@ -12,6 +12,7 @@ const schema = z.object({
   GEMINI_MODEL: z.string().default("gemini-3.5-flash"),
   GROQ_API_KEY: z.string().min(1),
   GROQ_MODEL: z.string().default("llama-3.3-70b-versatile"),
+  JWT_SECRET: z.string().min(1),
 
   PORT: z.coerce.number().default(3000),
 

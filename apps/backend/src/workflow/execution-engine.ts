@@ -19,7 +19,7 @@ export class ExecutionEngine {
       for (const step of plan.steps) {
         const agent = this.registry.get(step);
 
-        const result = await agent.execute(context);
+        const _result = await agent.execute(context);
 
         switch (step) {
           case WorkflowStep.DESTINATION: {
