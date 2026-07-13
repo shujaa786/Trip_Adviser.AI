@@ -1,33 +1,36 @@
-# ===========================
 # Dependencies
-# ===========================
-node_modules
+node_modules/
 
-# pnpm
-.pnpm-store
-
-# Turborepo
-.turbo
-
-# Build Output
-dist
-coverage
-*.tsbuildinfo
+# Build
+dist/
+build/
+coverage/
+.turbo/
 
 # Environment
 .env
-.env.*
-!.env.example
+.env.local
+.env.development.local
+.env.production.local
 
 # Logs
 *.log
 npm-debug.log*
 pnpm-debug.log*
 
-# IDE
-.vscode/settings.json
-.idea
-
 # OS
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Prisma
+apps/backend/generated/
+
+# Misc
+.cache/

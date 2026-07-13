@@ -1,0 +1,59 @@
+import { useState } from "react";
+import { LoaderCircle, SendHorizontal } from "lucide-react";
+
+interface Props {
+  onSend: (message: string) => void;
+  loading?: boolean;
+}
+
+export default function MessageInput({ onSend, loading = false }: Props) {
+  const [message, setMessage] = useState("");
+
+  function submit() {
+    const value = message.trim();
+
+    if (!value || loading) return;
+
+    onSend(value);
+
+    setMessage("");
+  }
+
+  return (
+    <div className="border-t border-slate-800 bg-slate-950 px-6 py-5">
+      <div className="mx-auto flex max-w-5xl items-end gap-4 rounded-2xl border border-slate-700 bg-slate-900 p-4 shadow-lg">
+        <textarea
+          rows={2}
+          value={message}
+          disabled={loading}
+          placeholder="Describe your dream trip... (Example: Plan a 5 day bike trip from Delhi to Spiti for 2 people under ₹60,000)"
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              submit();
+            }
+          }}
+          className="max-h-40 min-h-14 flex-1 resize-none bg-transparent text-base text-white outline-none placeholder:text-slate-500"
+        />
+
+        <button
+          disabled={loading}
+          onClick={submit}
+          className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {loading ? (
+            <LoaderCircle className="animate-spin text-white" size={20} />
+          ) : (
+            <SendHorizontal size={20} className="text-white" />
+          )}
+        </button>
+      </div>
+
+      <p className="mt-3 text-center text-xs text-slate-500">
+        Press <span className="font-medium">Enter</span> to send ·{" "}
+        <span className="font-medium">Shift + Enter</span> for a new line
+      </p>
+    </div>
+  );
+}

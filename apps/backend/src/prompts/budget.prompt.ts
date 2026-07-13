@@ -45,6 +45,14 @@ User Budget:
 Itinerary:
 ${JSON.stringify(itinerary.itinerary, null, 2)}
 
+Budget calculation MUST use the itinerary above.
+
+Never create another itinerary.
+
+Never change destination.
+
+Never assume luxury hotels unless itinerary contains them.
+
 Return EXACTLY this JSON:
 
 {

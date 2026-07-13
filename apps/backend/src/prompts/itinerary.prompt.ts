@@ -16,6 +16,13 @@ Return ONLY valid JSON.
 
 Destination:
 ${destination.destination}
+The destination has already been finalized.
+
+Never replace it.
+
+Never generate another destination.
+
+The itinerary MUST stay completely inside this destination.
 
 Days:
 ${context.request.days}

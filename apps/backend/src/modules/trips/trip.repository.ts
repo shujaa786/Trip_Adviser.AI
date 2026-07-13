@@ -32,7 +32,7 @@ export class TripRepository {
   }
 
   async findUserTrips(userId: string) {
-    return db.trip.findMany({
+    const trips = await db.trip.findMany({
       where: {
         userId,
       },
@@ -40,15 +40,52 @@ export class TripRepository {
         createdAt: "desc",
       },
     });
+
+    return trips.map((trip) => {
+      const request = trip.request as Prisma.JsonObject;
+
+      const source = String(request.source ?? "");
+
+      const destination = String(request.destination ?? "");
+
+      let title = "Untitled Trip";
+
+      if (source && destination) {
+        title = `${source} → ${destination}`;
+      } else if (destination) {
+        title = destination;
+      } else if (source) {
+        title = source;
+      }
+
+      return {
+        id: trip.id,
+        title,
+        createdAt: trip.createdAt,
+      };
+    });
   }
 
   async findTripById(id: string, userId: string) {
-    return db.trip.findFirst({
+    const trip = await db.trip.findFirst({
       where: {
         id,
         userId,
       },
     });
+
+    if (!trip) {
+      return null;
+    }
+
+    return {
+      id: trip.id,
+      request: trip.request,
+      trip: (trip.response as Prisma.JsonObject).trip,
+      execution: (trip.response as Prisma.JsonObject).execution,
+      metadata: (trip.response as Prisma.JsonObject).metadata,
+      createdAt: trip.createdAt,
+    };
   }
 
   async deleteTrip(id: string, userId: string) {

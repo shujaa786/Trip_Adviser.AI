@@ -26,6 +26,7 @@ export class GroqProvider implements LLMProvider {
     const text = (completion.choices[0]?.message?.content ?? "{}")
       .replace(/```json/g, "")
       .replace(/```/g, "")
+      .replace(/\bundefined\b/g, "null")
       .trim();
 
     return JSON.parse(text) as T;

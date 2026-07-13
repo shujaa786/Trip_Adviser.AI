@@ -1,9 +1,13 @@
 import { LLMService } from "../services/llm.service";
 import { ProviderFactory } from "../providers/provider-factory";
+import { InterpreterAgent } from "../agents/interpreter/interpreter.agent";
+
 /**
  * Shared application services.
- * This is the application's composition root.
  */
-const providerFactory = new ProviderFactory();
+
+export const providerFactory = new ProviderFactory();
 
 export const llmService = new LLMService(providerFactory);
+
+export const interpreterAgent = new InterpreterAgent(providerFactory);

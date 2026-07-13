@@ -4,38 +4,66 @@ export function buildDestinationPrompt(context: WorkflowContext): string {
   const { request } = context;
 
   return `
-You are an expert travel planner.
+You are a destination enrichment agent.
 
-Recommend exactly ONE travel destination.
-Recommend the BEST VALUE destination.
+IMPORTANT
 
-Avoid luxury-first planning.
+The destination has ALREADY been selected by another AI.
 
-Prioritize experiences.
+DO NOT recommend another destination.
 
-Do not recommend destinations whose average trip cost exceeds 110% of the user's budget.
+DO NOT replace it.
+
+DO NOT optimize it.
+
+Your ONLY responsibility is enriching the given destination.
+
+Destination
+
+${request.destination}
+
+Source
+
+${request.source}
+
+Trip Duration
+
+${request.days} days
+
+Travelers
+
+${request.travelers}
+
+Budget
+
+₹${request.budget}
+
+Interests
+
+${request.interests.join(", ")}
+
 Return ONLY valid JSON.
 
-IMPORTANT:
-Do NOT use markdown.
-Do NOT wrap the JSON inside triple backticks with json.
-Do NOT explain anything.
+Schema
 
-Return exactly this schema:
 {
-  "destination": "",
-  "reason": "",
-  "bestSeason": "",
-  "estimatedBudget": 0,
-  "highlights": []
+  "destination":"",
+  "reason":"",
+  "bestSeason":"",
+  "estimatedBudget":0,
+  "highlights":[]
 }
 
-Traveler Details:
+Rules
 
-Source: ${request.source}
-Budget: ${request.budget}
-Days: ${request.days}
-Travelers: ${request.travelers}
-Interests: ${request.interests.join(", ")}
+- destination MUST remain exactly "${request.destination}"
+
+- Never change destination.
+
+- Never suggest another place.
+
+- Never add markdown.
+
+- Output ONLY JSON.
 `;
 }

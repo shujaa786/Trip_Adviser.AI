@@ -6,9 +6,9 @@ export const TripRequestSchema = z
 
     destination: z.string().optional(),
 
-    startDate: z.string().optional(),
+    startDate: z.string().nullable().optional(),
 
-    endDate: z.string().optional(),
+    endDate: z.string().nullable().optional(),
 
     days: z.number().positive().optional(),
 
@@ -22,9 +22,14 @@ export const TripRequestSchema = z
       .object({
         hotelCategory: z.enum(["budget", "standard", "luxury"]).optional(),
 
-        transport: z.enum(["bike", "car", "train", "flight"]).optional(),
+        transport: z
+          .enum(["bike", "car", "train", "flight"])
+          .nullable()
+          .optional(),
 
-        foodPreference: z.string().optional(),
+        accommodationType: z.string().nullable().optional(),
+        foodPreference: z.string().nullable().optional(),
+        accessibilityNeeds: z.string().nullable().optional(),
       })
       .optional(),
   })
