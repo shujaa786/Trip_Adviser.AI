@@ -3,6 +3,11 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
+
+    "target": "ES2022",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+
     "types": ["node", "express"],
     "declaration": false
   },
