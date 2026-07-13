@@ -13,8 +13,8 @@ export interface TripPlanResponse {
 
   execution: {
     workflowId: string;
-
     status: string;
+    agentsExecuted: string[];
   };
 
   metadata: {

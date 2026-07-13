@@ -24,8 +24,8 @@ export class ResponseComposer {
 
       execution: {
         workflowId: context.execution.workflowId,
-
         status: context.execution.status,
+        agentsExecuted: ["DestinationAgent", "ItineraryAgent", "BudgetAgent"],
       },
 
       metadata: {
