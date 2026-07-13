@@ -7,6 +7,8 @@
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "clean": "rimraf dist"
