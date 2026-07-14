@@ -4,17 +4,12 @@ import { DestinationResult, ItineraryResult, BudgetResult } from "../domain";
 
 export interface WorkflowContext {
   request: {
-    source: string;
-
-    destination?: string;
-
-    days: number;
-
-    budget: number;
-
-    travelers: number;
-
-    interests: string[];
+    source?: string | null;
+    destination?: string | null;
+    days?: number | null;
+    budget?: number | null;
+    travelers?: number | null;
+    interests?: string[] | null;
   };
 
   execution: {

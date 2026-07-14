@@ -13,6 +13,12 @@ export function buildBudgetPrompt(context: WorkflowContext): string {
   }
 
   return `
+  Original User Request
+
+
+Structured Context
+
+${JSON.stringify(context.request, null, 2)}
 You are a travel budget optimizer.
 
 Your job is NOT to estimate luxury prices.
@@ -53,20 +59,29 @@ Never change destination.
 
 Never assume luxury hotels unless itinerary contains them.
 
-Return EXACTLY this JSON:
+Return ONLY valid JSON in this format:
 
 {
-  "total": 0,
+  "total": 46500,
   "withinBudget": true,
   "suggestions": [],
   "breakdown": {
-    "transport": 0,
-    "accommodation": 0,
-    "food": 0,
-    "activities": 0,
-    "miscellaneous": 0
+    "transport": 6000,
+    "accommodation": 21000,
+    "food": 9000,
+    "activities": 8000,
+    "miscellaneous": 2500
   }
 }
+
+Rules
+
+- All monetary values MUST be realistic INR estimates.
+- Never return 0 unless the cost is actually zero.
+- If itinerary estimatedCost values exist, use them.
+- Otherwise estimate yourself.
+- Total MUST equal the sum of the breakdown.
+- Return ONLY JSON.
 
 IMPORTANT:
 - Return ONLY JSON.

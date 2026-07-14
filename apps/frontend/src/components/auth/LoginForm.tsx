@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { login } from "../../api/auth.api";
 import { useAuth } from "../../providers/useAuth";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 interface Props {
   onSuccess: () => void;
@@ -11,23 +13,37 @@ interface Props {
 export default function LoginForm({ onSuccess }: Props) {
   const navigate = useNavigate();
   const { login: setToken } = useAuth();
-
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
 
-    const { data } = await login({
-      email,
-      password,
-    });
+    try {
+      setLoading(true);
 
-    setToken(data.token);
+      const { data } = await login({
+        email,
+        password,
+      });
 
-    onSuccess();
+      toast.success(data.message ?? "Login successful");
 
-    navigate("/app");
+      setToken(data.token);
+
+      onSuccess();
+
+      navigate("/app");
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message ?? "Unable to login");
+      } else {
+        toast.error("Unexpected error");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -62,9 +78,14 @@ export default function LoginForm({ onSuccess }: Props) {
 
       <button
         type="submit"
-        className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
+        disabled={loading || !email.trim() || !password.trim()}
+        className={`w-full rounded-lg py-3 font-semibold text-white transition ${
+          loading || !email.trim() || !password.trim()
+            ? "cursor-not-allowed bg-blue-500 opacity-70"
+            : "bg-blue-600 hover:bg-blue-700"
+        }`}
       >
-        Login
+        {loading ? "Logging in..." : "Login"}
       </button>
     </form>
   );

@@ -7,7 +7,6 @@ export class ContextManager {
   private readonly validator = new RequestValidator();
 
   private readonly builder = new ContextBuilder();
-
   create(payload: unknown): WorkflowContext {
     const request = this.validator.validate(payload);
 

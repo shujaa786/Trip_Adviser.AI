@@ -1,4 +1,6 @@
 import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 import { register } from "../../api/auth.api";
 
@@ -7,6 +9,8 @@ interface Props {
 }
 
 export default function RegisterForm({ onSuccess }: Props) {
+  const [loading, setLoading] = useState(false);
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,13 +18,29 @@ export default function RegisterForm({ onSuccess }: Props) {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
 
-    await register({
-      name,
-      email,
-      password,
-    });
+    try {
+      setLoading(true);
 
-    onSuccess();
+      const { data } = await register({
+        name,
+        email,
+        password,
+      });
+
+      toast.success(
+        data.message ?? "Account created successfully. Please login.",
+      );
+
+      onSuccess();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message ?? "Unable to register");
+      } else {
+        toast.error("Unexpected error");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -68,9 +88,14 @@ export default function RegisterForm({ onSuccess }: Props) {
 
       <button
         type="submit"
-        className="w-full rounded-lg bg-blue-600 py-3 font-semibold text-white transition hover:bg-blue-700"
+        disabled={loading || !name.trim() || !email.trim() || !password.trim()}
+        className={`w-full rounded-lg py-3 font-semibold text-white transition ${
+          loading || !name.trim() || !email.trim() || !password.trim()
+            ? "cursor-not-allowed bg-blue-500 opacity-70"
+            : "bg-blue-600 hover:bg-blue-700"
+        }`}
       >
-        Register
+        {loading ? "Creating Account..." : "Register"}
       </button>
     </form>
   );

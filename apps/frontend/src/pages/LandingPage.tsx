@@ -21,13 +21,13 @@ export default function LandingPage() {
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "80px 24px",
+            padding: "60px 20px",
             textAlign: "center",
           }}
         >
           <h1
             style={{
-              fontSize: "4rem",
+              fontSize: "clamp(2.5rem, 8vw, 4rem)",
               marginBottom: "20px",
               fontWeight: 700,
             }}
@@ -37,7 +37,7 @@ export default function LandingPage() {
 
           <p
             style={{
-              fontSize: "1.5rem",
+              fontSize: "clamp(1rem,3vw,1.5rem)",
               color: "#cbd5e1",
               maxWidth: "850px",
               margin: "0 auto 40px",
@@ -55,7 +55,7 @@ export default function LandingPage() {
             style={{
               display: "flex",
               justifyContent: "center",
-              gap: "20px",
+              gap: "12px",
               flexWrap: "wrap",
             }}
           >
@@ -65,7 +65,8 @@ export default function LandingPage() {
                 setOpenModal(true);
               }}
               style={{
-                padding: "15px 34px",
+                padding: "16px 30px",
+                minWidth: "170px",
                 borderRadius: "10px",
                 border: "none",
                 background: "#2563eb",
@@ -84,7 +85,8 @@ export default function LandingPage() {
                 setOpenModal(true);
               }}
               style={{
-                padding: "15px 34px",
+                padding: "16px 30px",
+                minWidth: "170px",
                 borderRadius: "10px",
                 border: "1px solid #64748b",
                 background: "transparent",
@@ -105,7 +107,7 @@ export default function LandingPage() {
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "50px 24px",
+            padding: "70px 20px",
           }}
         >
           <h2
@@ -152,12 +154,14 @@ export default function LandingPage() {
                 style={{
                   background: "#1e293b",
                   borderRadius: "16px",
-                  padding: "30px",
+                  padding: "24px",
                   textAlign: "center",
                   border: "1px solid #334155",
                 }}
               >
-                <div style={{ fontSize: "3rem" }}>{item.icon}</div>
+                <div style={{ fontSize: "clamp(2rem,5vw,2.5rem)" }}>
+                  {item.icon}
+                </div>
 
                 <h3
                   style={{
@@ -203,7 +207,7 @@ export default function LandingPage() {
           <div
             style={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "center",
               alignItems: "center",
               flexWrap: "wrap",
               gap: "20px",
@@ -217,11 +221,18 @@ export default function LandingPage() {
               "Budget",
               "Response",
             ].map((step, index) => (
-              <div key={step} style={{ display: "flex", alignItems: "center" }}>
+              <div
+                key={step}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  // flexDirection: "column",
+                }}
+              >
                 <div
                   style={{
-                    width: "120px",
-                    height: "120px",
+                    width: "90px",
+                    height: "90px",
                     borderRadius: "50%",
                     background: "#2563eb",
                     display: "flex",
@@ -237,7 +248,7 @@ export default function LandingPage() {
                   <div
                     style={{
                       color: "#64748b",
-                      fontSize: "2rem",
+                      fontSize: "1.4rem",
                       margin: "0 15px",
                     }}
                   >
@@ -251,8 +262,8 @@ export default function LandingPage() {
 
         <footer
           style={{
-            marginTop: "100px",
-            padding: "30px",
+            marginTop: "70px",
+            padding: "40px 20px",
             borderTop: "1px solid #334155",
             textAlign: "center",
             color: "#94a3b8",

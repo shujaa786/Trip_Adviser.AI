@@ -20,7 +20,7 @@ Travelers:
 ${context.request.travelers}
 
 Interests:
-${context.request.interests.join(", ")}
+${(context.request.interests ?? []).join(", ")}
 
 Generate an itinerary.
 `;

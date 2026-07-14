@@ -2,39 +2,27 @@ import { z } from "zod";
 
 export const TripRequestSchema = z
   .object({
-    source: z.string().min(2),
-
-    destination: z.string().optional(),
-
-    startDate: z.string().nullable().optional(),
-
-    endDate: z.string().nullable().optional(),
-
-    days: z.number().positive().optional(),
-
-    budget: z.number().positive(),
-
-    travelers: z.number().positive().default(1),
-
-    interests: z.array(z.string()).default([]),
+    source: z.string().optional().nullable(),
+    destination: z.string().optional().nullable(),
+    budget: z.number().optional().nullable(),
+    days: z.number().optional().nullable(),
+    travelers: z.number().optional().nullable(),
+    interests: z.array(z.string()).optional().nullable(),
+    startDate: z.string().optional().nullable(),
+    endDate: z.string().optional().nullable(),
 
     preferences: z
       .object({
-        hotelCategory: z.enum(["budget", "standard", "luxury"]).optional(),
-
-        transport: z
-          .enum(["bike", "car", "train", "flight"])
-          .nullable()
-          .optional(),
-
-        accommodationType: z.string().nullable().optional(),
-        foodPreference: z.string().nullable().optional(),
-        accessibilityNeeds: z.string().nullable().optional(),
+        accommodation: z.string().optional().nullable(),
+        transport: z.string().optional().nullable(),
+        foodPreference: z.string().optional().nullable(),
       })
-      .optional(),
+      .optional()
+      .nullable(),
   })
-  .refine((data) => !!data.days || (!!data.startDate && !!data.endDate), {
-    message: "Provide either days OR startDate & endDate",
-  });
+  .passthrough();
+// .refine((data) => !!data.days || (!!data.startDate && !!data.endDate), {
+//   message: "Provide either days OR startDate & endDate",
+// });
 
 export type TripRequest = z.infer<typeof TripRequestSchema>;

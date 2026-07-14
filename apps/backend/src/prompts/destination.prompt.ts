@@ -4,6 +4,13 @@ export function buildDestinationPrompt(context: WorkflowContext): string {
   const { request } = context;
 
   return `
+  Original User Request
+
+
+Structured Context
+
+${JSON.stringify(context.request, null, 2)}
+
 You are a destination enrichment agent.
 
 IMPORTANT
@@ -40,7 +47,7 @@ Budget
 
 Interests
 
-${request.interests.join(", ")}
+${(request.interests ?? []).join(", ")}
 
 Return ONLY valid JSON.
 
@@ -50,7 +57,7 @@ Schema
   "destination":"",
   "reason":"",
   "bestSeason":"",
-  "estimatedBudget":0,
+  "estimatedBudget":number,
   "highlights":[]
 }
 

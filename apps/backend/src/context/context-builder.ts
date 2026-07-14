@@ -8,9 +8,9 @@ type WorkflowRequest = WorkflowContext["request"];
 
 export class ContextBuilder {
   build(request: TripRequest): WorkflowContext {
-    let days = request.days;
+    let days = request.days ?? undefined;
 
-    if (!days && request.startDate && request.endDate) {
+    if (days == null && request.startDate && request.endDate) {
       const start = new Date(request.startDate);
       const end = new Date(request.endDate);
 
@@ -19,8 +19,8 @@ export class ContextBuilder {
         1;
     }
 
-    if (days === undefined) {
-      throw new Error("Days could not be determined.");
+    if (days == null || Number.isNaN(days) || days <= 0) {
+      days = 5;
     }
 
     const normalizedRequest = this.buildNormalizedRequest(request, days);
