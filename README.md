@@ -32,44 +32,127 @@
 -   Groq + Gemini Fallback
 -   Turborepo Monorepo
 
-## 🏗 Architecture
+## 🏗 System Architecture
 
-``` mermaid
-flowchart LR
-User([User]) --> FE[React Frontend]
-FE --> API[Express Backend]
-API --> AUTH[JWT]
-AUTH --> ORCH[AI Orchestrator]
-ORCH --> DEST[Destination Agent]
-ORCH --> ITI[Itinerary Agent]
-ORCH --> BUDGET[Budget Agent]
-DEST --> LLM[(Groq/Gemini)]
-ITI --> LLM
-BUDGET --> LLM
-ORCH --> DB[(PostgreSQL)]
-DB --> ORCH
-ORCH --> FE
+```mermaid
+graph TD
+
+    %% Frontend
+    FE["React Frontend<br/>Vite + TypeScript + Tailwind"]
+
+    %% API Layer
+    API["Express REST API<br/>Authentication + Validation + Middleware"]
+
+    %% Core Orchestration
+    ORCH["AI Orchestrator"]
+
+    CTX["Context Manager"]
+    PLAN["Execution Planner"]
+    REG["Agent Registry"]
+    EXEC["Execution Engine"]
+    RESP["Response Composer"]
+
+    %% AI Agents
+    INT["Interpreter Agent"]
+    DEST["Destination Agent"]
+    ITI["Itinerary Agent"]
+    BUD["Budget Agent"]
+
+    %% LLM Layer
+    LLM["LLM Provider Layer"]
+    GROQ["Groq (fallback)"]
+    GEM["Google Gemini (Primary)"]
+
+    %% Persistence
+    PERSIST["Persistence Layer<br/>Repositories + Prisma ORM"]
+    DB[("PostgreSQL (Neon)")]
+
+    %% Flow
+
+    FE --> API
+    API --> ORCH
+
+    ORCH --> CTX
+    ORCH --> PLAN
+    ORCH --> REG
+    ORCH --> EXEC
+
+    EXEC --> INT
+
+    INT --> DEST
+    DEST --> ITI
+    ITI --> BUD
+
+    INT --> LLM
+    DEST --> LLM
+    ITI --> LLM
+    BUD --> LLM
+
+    LLM --> GEM
+    GEM -. Fallback .-> GROQ
+
+    EXEC --> RESP
+    RESP --> PERSIST
+    PERSIST --> DB
 ```
 
 ## 🔄 Workflow
 
-``` mermaid
+```mermaid
 sequenceDiagram
-User->>Frontend: Travel Prompt
-Frontend->>Backend: POST /trips/plan
-Backend->>Orchestrator: Create Context
-Orchestrator->>Destination: Generate Destination
-Destination->>LLM: Prompt
-LLM-->>Destination: Response
-Orchestrator->>Itinerary: Generate Plan
-Itinerary->>LLM: Prompt
-LLM-->>Itinerary: Response
-Orchestrator->>Budget: Estimate Cost
-Budget->>LLM: Prompt
-LLM-->>Budget: Response
-Orchestrator->>Database: Save Trip
-Database-->>Orchestrator: Success
-Orchestrator-->>Frontend: Combined Result
+
+    participant U as User
+    participant FE as React Frontend
+    participant API as Express API
+    participant O as AI Orchestrator
+    participant C as Context Manager
+    participant P as Execution Planner
+    participant E as Execution Engine
+    participant I as Interpreter Agent
+    participant D as Destination Agent
+    participant T as Itinerary Agent
+    participant B as Budget Agent
+    participant L as LLM Provider
+    participant DB as PostgreSQL
+
+    U->>FE: Enter travel request
+
+    FE->>API: POST /api/v1/trips/plan
+
+    API->>O: Create Workflow
+
+    O->>C: Build Workflow Context
+    C-->>O: Validated Context
+
+    O->>P: Determine Execution Plan
+    P-->>O: Agent Pipeline
+
+    O->>E: Execute Workflow
+
+    E->>I: Interpret User Intent
+    I->>L: Parse Natural Language
+    L-->>I: Structured Context
+
+    E->>D: Generate Destination
+    D->>L: Destination Prompt
+    L-->>D: Destination Response
+
+    E->>T: Generate Itinerary
+    T->>L: Itinerary Prompt
+    L-->>T: Itinerary Response
+
+    E->>B: Estimate Budget
+    B->>L: Budget Prompt
+    L-->>B: Budget Response
+
+    E->>O: Agent Results
+
+    O->>DB: Persist Trip
+    DB-->>O: Success
+
+    O->>FE: Unified Response
+
+    FE-->>U: Display Trip Plan
 ```
 
 ## 📁 Project Structure
