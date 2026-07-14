@@ -8,6 +8,18 @@
 -   Frontend: https://trip-adviser-ai-frontend.vercel.app
 -   Backend Health: https://trip-adviser-ai.onrender.com/api/v1/health
 
+## 📸 Screenshots
+
+| Landing Page | AI Planner |
+|--------------|------------|
+| ![](./screenshots/trip-adviser-homeScreen.png) | ![](./screenshots/chatwindow-trip_adviser.png) |
+
+<br>
+
+| Generated Trip |
+|----------------|
+| ![](./screenshots/chat-screen-trip_adviser.png) |
+
 ## ✨ Features
 
 -   Multi-Agent AI Orchestration
